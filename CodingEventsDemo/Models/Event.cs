@@ -13,16 +13,22 @@ namespace CodingEventsDemo.Models
 
         public EventType Type { get; set; }
 
-        public int Id { get; }
-        static private int nextId = 1;
+        public int Id { get; set; }
+        //static private int nextId = 1;
 
+        //Entity mapper will take care of incrementing Id for us -
+        //it uses Id field as key because of its name.
+        //It needs Id to have a setter
         public Event()
         {
-            Id = nextId;
-            nextId++;
+            //Id = nextId;
+            //nextId++;
         }
 
-        public Event(string name, string description, string contactEmail) : this()
+        //Calling no-arg constructor is not necessary if the no-arg constructor 
+        //is not handling Id incrementing for us.
+        public Event(string name, string description, string contactEmail) 
+            //: this()
         {
             Name = name;
             Description = description;
