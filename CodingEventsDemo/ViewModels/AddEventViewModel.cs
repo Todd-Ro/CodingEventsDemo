@@ -19,7 +19,32 @@ namespace CodingEventsDemo.ViewModels
         [EmailAddress]
         public string ContactEmail { get; set; }
 
-        public EventType Type { get; set; }
+        [Required(ErrorMessage = "CategoryId is required")]
+        public int CategoryId { get; set; }
+
+        //Each SelectListItem here represents an EventCategory 
+        public List<SelectListItem> Categories { get; set; }
+
+
+
+        public AddEventViewModel(List<EventCategory> categories)
+        {
+            Categories = new List<SelectListItem>();
+
+            foreach (var category in categories)
+            {
+                Categories.Add(
+                    new SelectListItem
+                    {
+                        Value = category.Id.ToString(),
+                        Text = category.Name
+                    }
+                    );
+            }
+        }
+
+        public AddEventViewModel() { }
+
 
         public List<SelectListItem> EventTypes { get; set;  } = new List<SelectListItem>
         {

@@ -13,17 +13,21 @@ namespace coding_events_practice.Controllers
 {
     public class EventsController : Controller
     {
+
+        private EventDbContext context;
+        
         // GET: /<controller>/
         public IActionResult Index()
         {
-            List<Event> events = new List<Event>(EventData.GetAll());
+            List<Event> events = context.Events.ToList();
 
             return View(events);
         }
 
         public IActionResult Add()
         {
-            AddEventViewModel addEventViewModel = new AddEventViewModel();
+            List<EventCategory> categories = context.Categories.ToList();
+            AddEventViewModel addEventViewModel = new AddEventViewModel(categories);
 
             return View(addEventViewModel);
         }
@@ -33,15 +37,17 @@ namespace coding_events_practice.Controllers
         {
             if (ModelState.IsValid)
             {
+                EventCategory theCategory = context.Categories.Find(addEventViewModel.CategoryId);
                 Event newEvent = new Event
                 {
                     Name = addEventViewModel.Name,
                     Description = addEventViewModel.Description,
                     ContactEmail = addEventViewModel.ContactEmail,
-                    Type = addEventViewModel.Type
+                    Category = theCategory;
+                    //Type = addEventViewModel.Type
                 };
 
-                EventData.Add(newEvent);
+                //EventData.Add(newEvent);
 
                 return Redirect("/Events");
             }
